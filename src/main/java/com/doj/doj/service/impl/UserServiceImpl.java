@@ -8,6 +8,7 @@ import com.doj.doj.constant.CommonConstant;
 import com.doj.doj.exception.BusinessException;
 import com.doj.doj.model.dto.user.UserQueryDTO;
 import com.doj.doj.model.entity.User;
+import com.doj.doj.model.enums.UserRoleEnum;
 import com.doj.doj.model.vo.UserLoginVO;
 import com.doj.doj.model.vo.UserVO;
 import com.doj.doj.service.UserService;
@@ -211,6 +212,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
+    }
+
+    /**
+     * 是否为管理员
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public boolean isAdmin(HttpServletRequest request) {
+        // 仅管理员可查询
+        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User user = (User) userObj;
+        return isAdmin(user);
+    }
+
+    @Override
+    public boolean isAdmin(User user) {
+        return user != null && UserRoleEnum.ADMIN.getValue().equals(user.getUserRole());
     }
 }
 

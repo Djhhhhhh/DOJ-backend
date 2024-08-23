@@ -40,4 +40,8 @@ public interface UserService extends IService<User> {
     List<UserVO> getUserVO(List<User> userList);
 
     Wrapper<User> getQueryWrapper(UserQueryDTO userQueryRequest);
+
+    boolean isAdmin(HttpServletRequest request);
+
+    boolean isAdmin(User user);
 }
